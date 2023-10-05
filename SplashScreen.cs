@@ -1,12 +1,15 @@
+using Utils;
+using static Utils.Constants;
+
 namespace Adventure
 {
-    using Utils;
     public class SplashScreen : IGameScreen
     {
         private const string sloagan = "Double the Action";
+        private const string lineSymbole = "*";
         private const int ANIMATION_SEGMENT_LOGO = 0;
         private const int ANIMATION_SEGMENT_LINE = 1;
-        private const int MAX_LINE_LENGTH = 100;
+        private const int MAX_LINE_LENGTH = 110;
         private const int PADDING = 3;
         private string drawing;
         private int artHeight;
@@ -16,10 +19,10 @@ namespace Adventure
         private int animationSegment = 0;
         public Action<Type> OnExitScreen { get; set; }
 
-        public SplashScreen()
+        public SplashScreen(string source)
         {
-            drawing = FileUtils.ReadFromFile("assets/splash.txt");
-            artHeight = drawing.Split("\n").Length + PADDING;
+            drawing = FileUtils.ReadFromFile(source);
+            artHeight = drawing.Split(NEW_LINE).Length + PADDING;
             steps = Console.WindowHeight - artHeight;
             currentRow = steps;
             animationSegment = ANIMATION_SEGMENT_LOGO;
@@ -43,7 +46,7 @@ namespace Adventure
             else if (animationSegment == ANIMATION_SEGMENT_LINE)
             {
                 currentRow = artHeight;
-                line += "-";
+                line += lineSymbole;
                 if (line.Length == MAX_LINE_LENGTH)
                 {
                     animationSegment++;
@@ -51,7 +54,7 @@ namespace Adventure
             }
             else
             {
-                //onExitScreen(this);
+                OnExitScreen(typeof(MenuScreen));
             }
 
         }

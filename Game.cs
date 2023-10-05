@@ -47,8 +47,10 @@ public class Game
     private static void Init()
     {
         Console.Write(ANSICodes.HideCursor);
-        currentScreen = new SplashScreen();
-        currentScreen.OnExitScreen = OnExitScreen;
+        currentScreen = new SplashScreen("assets/splash.txt")
+        {
+            OnExitScreen = OnExitScreen
+        };
         currentScreen.Init();
     }
 
