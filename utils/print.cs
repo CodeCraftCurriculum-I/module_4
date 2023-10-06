@@ -1,91 +1,87 @@
+
+using static System.Console;
+using static Utils.ANSICodes;
+using static Utils.ANSICodes.BgColors;
+using static Utils.ANSICodes.Colors;
+using static Utils.ANSICodes.Effects;
+using static Utils.ANSICodes.Positioning;
+
+
 namespace Utils
 {
-    using System.Collections.Generic;
 
-    enum Alignment
+    public enum Alignment
     {
         LEFT,
         RIGHT,
         CENTER
     }
 
-    class Print
+    public static class Output
     {
-        private List<string> steps;
-
-        public Print()
+        public static string Color(string text, string color)
         {
-            steps = new List<string>();
+            return $"{color}{text}";
+        }
+        public static string Bold(string text)
+        {
+            return $"{Effects.Bold}{text}";
+        }
+        public static string Reset(string text)
+        {
+            return $"{text}{ANSICodes.Reset}";
         }
 
-        public Print Color(string color)
+        public static string Write(String text, bool newLine = false)
         {
-            steps.Add(color);
-            return this;
+            if (newLine)
+            {
+                Console.WriteLine(text);
+            }
+            else
+            {
+                Console.Write(text);
+            }
+            return text;
         }
-
-        public Print BgColor(string color)
-        {
-            steps.Add(color);
-            return this;
-        }
-
-        public Print Append(string text, Alignment alignment = Alignment.LEFT, bool newLine = false)
+        public static string Align(string text, Alignment alignment = Alignment.LEFT, bool newLine = false)
         {
             if (text.Split("\n").Length > 1)
             {
                 string[] lines = text.Split("\n");
+                List<string> lineSegments = new List<string>();
                 foreach (string line in lines)
                 {
-                    Append($"{line}", alignment);
-                    steps.Add("\n");
+                    lineSegments.Add(Align($"{line}", alignment));
                 }
-                return this;
+                return string.Join("", lineSegments);
             }
 
             if (alignment != Alignment.LEFT)
             {
                 int width = System.Console.WindowWidth;
                 int textWidth = text.Length;
-                int padding = 0;
+                int paddingLeft = 0;
+                int paddingRight = 0;
 
                 if (alignment == Alignment.CENTER)
                 {
-                    padding = (width - textWidth) / 2;
+                    paddingRight = paddingLeft = (width - textWidth) / 2;
                 }
                 else if (alignment == Alignment.RIGHT)
                 {
-                    padding = width - textWidth;
+                    paddingLeft = width - textWidth;
                 }
 
-                string paddingString = new string(' ', padding);
-                steps.Add(paddingString);
+                paddingLeft = Math.Clamp(paddingLeft, 0, int.MaxValue);
+                paddingRight = Math.Clamp(paddingRight, 0, int.MaxValue);
+                text = $"{new string(' ', paddingLeft)}{text}{new string(' ', paddingRight)}";
             }
 
-            steps.Add(text);
-            if (newLine)
-            {
-                steps.Add("\n");
-            }
-            return this;
-        }
+            if (newLine) { text += "\n"; }
 
-        public Print Bold()
-        {
-            steps.Add(ANSICodes.Effects.Bold);
-            return this;
+            return text;
         }
-        public Print Reset()
-        {
-            steps.Add(ANSICodes.Reset);
-            return this;
-        }
-        public Print Write()
-        {
-            string text = string.Join("", steps.ToArray());
-            System.Console.Write(text);
-            return this;
-        }
-
     }
+
 }
