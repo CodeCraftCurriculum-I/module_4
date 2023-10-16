@@ -12,7 +12,6 @@ namespace Utils
             FileStream fs = File.Create(path);
             byte[] info = new UTF8Encoding(true).GetBytes(content);
             fs.Write(info, 0, info.Length);
-
         }
 
         public static string ReadFromFile(string path)

@@ -1,4 +1,5 @@
 
+using System.Text.RegularExpressions;
 using static System.Console;
 using static Utils.ANSICodes;
 using static Utils.ANSICodes.BgColors;
@@ -31,9 +32,9 @@ namespace Utils
         {
             return $"{text}{ANSICodes.Reset}";
         }
-
         public static string Write(String text, bool newLine = false)
         {
+            /// TODO: There is a line limit, but it is not enforced in this function. It should be. 
             if (newLine)
             {
                 Console.WriteLine(text);
@@ -82,6 +83,18 @@ namespace Utils
 
             return text;
         }
+
+        public static string ColorizeWords(string text, string primaryColor, string secondaryColor)
+        {
+            string modifiedInput = secondaryColor + text + ANSICodes.Reset;
+
+            return Regex.Replace(
+                modifiedInput,
+                @"\*(.*?)\*",
+                match => ANSICodes.Reset + primaryColor + match.Groups[1].Value + ANSICodes.Reset + secondaryColor
+            );
+        }
+
     }
 
 }

@@ -23,9 +23,9 @@ namespace Adventure
         private int animationSegment = 0;
         private bool skipAnimation = false;
         public Action<Type, Object[]> OnExitScreen { get; set; }
-        private Action<string> drawGraphics = (graphics) => Write(Reset(Color(Align(graphics, Alignment.CENTER), Colors.Green)));
+        private Action<string> drawGraphics = (graphics) => Write(Reset(Color(Align(graphics, Alignment.CENTER), Colors.Green)), newLine: true);
         private Action<string> writeSlogan = (slogan) => Write(Reset(Color(Align(sloagan, Alignment.CENTER), Colors.Green)), newLine: true);
-        private Action<string> drawLine = (line) => Write(Reset(Color(Align(line, Alignment.CENTER), Colors.Red)));
+        private Action<string> drawLine = (line) => Write(Reset(Color(Align(line, Alignment.CENTER), Colors.Red)), newLine: true);
 
         public SplashScreen(string source, bool noAnimation = false)
         {

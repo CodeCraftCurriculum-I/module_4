@@ -1,0 +1,34 @@
+[location]
+    Id = start room
+    Description = You are standing in a room there is a *key* on the floor, a *door*, a *window* and some *students*    
+
+
+[key]
+    Id = Evil Key 
+    Description = A key that is made of a compound so dark it drains the light around it.
+    Status = floor
+    [Action.floor.take]
+        Description => You pick up the key and put it in your pocket
+        Status => pocket
+        Player => Inventory.add
+    [Action.pocket.throw]
+        Description => You throw the key away
+        Status => floor
+        Player => Inventory.remove
+        Location => Inventory.add
+/*
+
+[door]
+    Id = Broken door
+    Status = locked
+    Description = A door of poor quality, clearly shoody workmanship. 
+    [action.kick]
+        Description = The door splinters as your foot impacts it.
+        Status = open
+    [action.go]
+        Description.locked = You try going through the door, but it is closed so you bump your head.
+        Description.open = You exit the room;
+        Moveto.open = hallway
+
+*/
+

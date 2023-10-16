@@ -72,7 +72,6 @@ public class Game
         {
             MusicPlayer.StartPlaying(AssetsAndSettings.GAME_MUSIC_FILE);
         }
-        Debug.Log("Init function is complete");
     }
 
     private static void Exit(object sender, ConsoleCancelEventArgs args)
