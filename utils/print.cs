@@ -10,8 +10,7 @@ using static Utils.ANSICodes.Positioning;
 
 namespace Utils
 {
-
-    public enum Alignment
+    public enum Alignment : int
     {
         LEFT,
         RIGHT,
@@ -83,7 +82,6 @@ namespace Utils
 
             return text;
         }
-
         public static string ColorizeWords(string text, string primaryColor, string secondaryColor)
         {
             string modifiedInput = secondaryColor + text + ANSICodes.Reset;

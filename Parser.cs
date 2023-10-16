@@ -6,7 +6,7 @@ using static Utils.Constants;
 
 // KeyValue becomes an Alias for the spesific key value pair that we are using. Doing it this way to make the code more readable.
 using KeyValue = System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<string>>;
-using System.Runtime.Serialization.Formatters.Binary;
+
 
 namespace Adventure
 {
@@ -58,15 +58,16 @@ namespace Adventure
                 else if (isAction(directive))
                 {
                     int actionIndex = 1;
-                    string local = segment.Value[actionIndex].Trim();
+                    string local = segment.Value[i + actionIndex].Trim();
                     int maxSegments = segment.Value.Count;
-                    while (actionIndex < maxSegments && (local.Contains("[") == false || local == ""))
+                    while (actionIndex < maxSegments && (local != "" && local.Contains("[") == false))
                     {
-                        local = segment.Value[actionIndex].Trim();
                         actionIndex++;
+                        local = segment.Value[i + actionIndex].Trim();
                     }
                     List<String> actionDirective = segment.Value.GetRange(i, actionIndex);
                     target = UpdateWithAction(actionDirective, target, keywords);
+                    i += (actionIndex - 1);
                 }
             }
 
@@ -78,8 +79,8 @@ namespace Adventure
             if (actionDescription.Count > 1)
             {
                 string[] critieria = actionDescription[0].Replace("[", "").Replace("]", "").Split(".");
-                string statusDesc = critieria[1];
-                string actionDesc = critieria[2];
+                string statusDesc = critieria[1].Trim();
+                string actionDesc = critieria[2].Trim();
                 string key = $"{statusDesc}.{actionDesc}";
                 keywords.Add(actionDesc);
 
@@ -107,7 +108,6 @@ namespace Adventure
 
             return instance;
         }
-
 
         Dictionary<string, List<string>> ExtractSegments(string[] levelDefinitionLines)
         {
@@ -165,7 +165,8 @@ namespace Adventure
         bool isAction(string line)
         {
             var local = line.Trim();
-            return local.StartsWith("[Action.");
+            bool isaction = local.StartsWith("[Action.");
+            return isaction;
         }
 
     }

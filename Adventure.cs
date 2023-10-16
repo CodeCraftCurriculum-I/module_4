@@ -36,16 +36,19 @@ namespace Adventure
         Location currentLocation;
         bool dirty = true;
         public Action<Type, Object[]> OnExitScreen { get; set; }
+
+        Player hero;
         public void Init()
         {
             command = commandBuffer = String.Empty;
             Adventure.Parser parser = new();
             currentLocation = parser.CreateLocationFromDescription(AssetsAndSettings.GAME_SOURCE);
             currentDescription = currentLocation.Description;
+            hero = new Player();
         }
-
         public void Input()
         {
+            ///TODO: Refactor i.e. make this function more readable. 
             if (Console.KeyAvailable)
             {
                 ConsoleKeyInfo keyInfo = Console.ReadKey(false);
@@ -58,12 +61,10 @@ namespace Adventure
                 {
                     if (keyInfo.Key == ConsoleKey.Backspace)
                     {
-
-                        if (commandBuffer.Length > 1)
+                        if (commandBuffer.Length >= 1)
                         {
                             commandBuffer = commandBuffer.Substring(0, commandBuffer.Length - 1);
                         }
-
                     }
                     else
                     {
@@ -76,6 +77,8 @@ namespace Adventure
         }
         public void Update()
         {
+            ///TODO: refactor this function. i.e. make it more readable. 
+
             if (command != String.Empty)
             {
                 if (basicCommands.ContainsKey(command))
@@ -119,36 +122,54 @@ namespace Adventure
                                 string[] parts = assertion.Split(" => ", StringSplitOptions.TrimEntries);
                                 if (parts.Length >= 2)
                                 {
-
                                     string assertionKey = parts[0];
                                     string assertionValue = parts[1];
 
+                                    ///TODO: Remove magick key
                                     if (assertionKey == "Description")
                                     {
                                         currentDescription = assertionValue;
                                     }
-                                    else if (assertionKey == "Status")
+                                    else if (assertionKey == "Status")///TODO: Remove magick key
                                     {
                                         target.Status = assertionValue;
                                     }
-
+                                    else if (assertionKey == "Player") ///TODO: Remove magick string
+                                    {
+                                        if (assertionValue == "hp.dec") ///TODO: Remove magic string
+                                        {
+                                            hero.hp--;
+                                        }
+                                    }
+                                    else if (assertionKey == "Move") ///TODO: You know what to do. 
+                                    {
+                                        Adventure.Parser parser = new();
+                                        currentLocation = parser.CreateLocationFromDescription($"game/{assertionValue}");
+                                        currentDescription = $"{currentDescription}\n{currentLocation.Description}";
+                                    }
                                 }
                             }
-
-
                         }
-
+                        else
+                        {
+                            currentDescription = "That is not possible";///TODO: Remove magick string, make feadback less static?
+                        }
                     }
                     else
                     {
-                        currentDescription = "That does nothing";
+                        currentDescription = "That does nothing";//TODO: Remove magick string, make feadback less static?
                     }
-
-
-
                 }
 
                 command = String.Empty;
+
+                // This is not a good solution, rewrite for clearity.
+                if (hero.hp == 0)
+                {
+                    currentDescription += "You died 💀"; //TODO: Remove magick string, les statick feadback?
+
+                }
+
             }
         }
         public void Draw()
@@ -161,6 +182,8 @@ namespace Adventure
                 Console.Clear();
 
                 Write(ANSICodes.Positioning.SetCursorPos(currentRow, currentColumn));
+
+                ///TODO: There is a problem when the description extends over 
                 Write(Reset(ColorizeWords(currentDescription, ANSICodes.Colors.Blue, ANSICodes.Colors.Yellow)), newLine: true);
 
                 currentRow = Console.CursorTop + PADDING;

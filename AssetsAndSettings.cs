@@ -9,7 +9,7 @@ namespace Adventure
         public const bool DEBUG = true;
 
         // Toggle music
-        public const bool MUSIC_IS_ENABLED = true;
+        public const bool MUSIC_IS_ENABLED = false;
 
         // Max line width for game 
         public const int MAX_LINE_WIDTH = 100;

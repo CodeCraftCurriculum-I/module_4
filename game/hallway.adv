@@ -1,0 +1,15 @@
+[location]
+    Id = Halway of infenet doom
+    Description = You are standing in a hallway, there is a single point of light above you, otherwise it is dark in both directions.\nFrom your left a scratchy, growly sound is comming from a Rabbit
+
+[Rabbit]
+    Id = Raging Rabbit
+    Hp = 5
+    Description = A rabbit that looks not to frendly
+    Status = faraway
+    [Action.faraway.kick]
+    Description => The rabbit is to war away, you over ballance and fall on your arse.
+    Player => hp.random(kick)
+
+
+

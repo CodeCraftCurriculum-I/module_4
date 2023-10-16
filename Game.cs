@@ -22,6 +22,7 @@ public class Game
         {
             throw new ArgumentException("next screen must implement IGameScreen.");
         }
+
         nextScreen = (IGameScreen)Activator.CreateInstance(nextScreenType, args);
     };
 
@@ -60,8 +61,10 @@ public class Game
     private static void Init()
     {
         Console.CancelKeyPress += new ConsoleCancelEventHandler(Exit);
+
         Console.Write(ANSICodes.HideCursor);
         Console.Title = "The Adventure Game";
+
         currentScreen = new SplashScreen(AssetsAndSettings.SPLASH_ART_FILE)
         {
             OnExitScreen = OnExitScreen

@@ -2,7 +2,6 @@
     Id = start room
     Description = You are standing in a room there is a *key* on the floor, a *door*, a *window* and some *students*    
 
-
 [key]
     Id = Evil Key 
     Description = A key that is made of a compound so dark it drains the light around it.
@@ -11,24 +10,37 @@
         Description => You pick up the key and put it in your pocket
         Status => pocket
         Player => Inventory.add
+    [Action.floor.lick]
+        Description => You lick the key; it has the flavors of strawberries and shattered dreams
+        Player => poisen.debuff 3
     [Action.pocket.throw]
         Description => You throw the key away
         Status => floor
         Player => Inventory.remove
         Location => Inventory.add
-/*
+
+[window]
+    Id = A broken window
+    Description = A broken window, marked by blood and tinged with heartache.
+
+[students]
+    Id = Just some sudentes
+    Description = A bunch of students siting on the floor
+    Status = idle
+    [Action.idle.tickle]
+        Description => They do not like that
+        Status => enraged
 
 [door]
     Id = Broken door
     Status = locked
     Description = A door of poor quality, clearly shoody workmanship. 
-    [action.kick]
-        Description = The door splinters as your foot impacts it.
-        Status = open
-    [action.go]
-        Description.locked = You try going through the door, but it is closed so you bump your head.
-        Description.open = You exit the room;
-        Moveto.open = hallway
-
-*/
+    [Action.locked.kick]
+        Description => The door splinters as your foot impacts it.
+        Status => open
+    [Action.locked.go]
+        Description => You try going through the door, but it is closed so you bump your head.
+    [Action.open.go]
+        Description => You exit the room;
+        Move => hallway.adv
 
